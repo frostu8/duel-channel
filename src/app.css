@@ -1,0 +1,18 @@
+html {
+  --bg: #0E0D0C;
+  --bg-light: #1F1E1D;
+  --primary-dark: #f7b314;
+  --primary: #ffe017;
+  --accent: #2541B2;
+  --accent-light: #1768AC;
+
+  --text-red-large: #FF391F;
+  --text-red: #FF8575;
+  --text-blue-large: #7381FC;
+  --text-blue: #9CA7FC;
+
+  /* Default font config; noto sans looks great! */
+  font-family: "Noto Sans", sans-serif;
+  color: white;
+  background-color: var(--bg);
+}
