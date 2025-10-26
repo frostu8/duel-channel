@@ -13,5 +13,8 @@ export default defineConfig({
 			},
 		},
 	},
+	optimizeDeps: {
+	    exclude: ['free-brands-svg-icons']
+	},
 	plugins: [sveltekit()]
 });

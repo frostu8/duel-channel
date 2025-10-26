@@ -1,6 +1,7 @@
 <script>
   import StreamPlayer from './StreamPlayer.svelte';
   import MobiumsCounter from './MobiumsCounter.svelte';
+  import Header from './Header.svelte';
   import WagerList from './WagerList.svelte';
   import WagerControls from './WagerControls.svelte';
   import WagerTimerBar from './WagerTimerBar.svelte';
@@ -296,6 +297,7 @@
   });
 </script>
 
+<Header {currentUser}/>
 <main>
   <WagerList
     wagers={redWagers}
@@ -346,7 +348,8 @@
 
 <style>
   main {
-    min-height: 100vh;
+    margin-top: 3em;
+    min-height: calc(100vh - 3em);
     display: flex;
     flex-flow: row nowrap;
   }
