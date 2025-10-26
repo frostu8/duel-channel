@@ -40,6 +40,7 @@
     flex: 1 1 0px;
     flex-flow: column nowrap;
     background-color: var(--bg-light);
+    margin-bottom: 2em;
 
     &.red {
       color: var(--text-red);

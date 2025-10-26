@@ -46,10 +46,9 @@
 <style>
   .wager-controls {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     gap: 0.25em;
     background-color: var(--bg);
-    padding-bottom: 2em;
 
     & button {
       flex-grow: 1;

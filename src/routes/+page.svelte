@@ -27,7 +27,17 @@
   // Session details
   let currentUser = $state(null);
   let currentBattle = $state(null);
-  let battleUpdateDelayId;
+  let isBattleTrivial = $derived.by(() => {
+    if (!currentBattle) return currentBattle;
+
+    // A trivial battle is one where only one team or no teams exist
+    const teamNumbers = currentBattle.participants.map((player) => player.team);
+    const uniqTeams = [...new Set(teamNumbers)];
+
+    console.log($state.snapshot(currentBattle.participants));
+
+    return uniqTeams.length < 2;
+  });
 
   let acceptingBets = $state(false);
   let betDuration = $state(0);
@@ -102,7 +112,6 @@
       })
       .then((body) => {
         // replace wagers wholesale
-        console.log('got new wagers', body);
         wagers = body;
       })
       .catch((error) => console.error(error));
@@ -128,19 +137,21 @@
   }
 
   function setBetTimer() {
-    if (currentBattle.accepting_bets) {
-      const closesAt = new Date(currentBattle.closes_at);
-      const now = new Date();
-      const delay = closesAt.getTime() - now.getTime();
+    // Do not let players do trivial bets
+    // Players *can* bet in the case one team has no participants, but they
+    // won't win anything. This just skips that confusion.
+    if (!isBattleTrivial && currentBattle.accepting_bets) {
+      const closesIn = currentBattle.closes_in;
 
-      if (delay > 0) {
+      if (closesIn > 0) {
         acceptingBets = true;
-        betDuration = delay;
+        betDuration = closesIn;
       } else {
         // date already passed?
         acceptingBets = false;
       }
     } else {
+      betDuration = 0;
       acceptingBets = false;
     }
   }
