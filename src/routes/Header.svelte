@@ -8,7 +8,7 @@
 <header>
   <h1>DUEL CHANNEL</h1>
   {#if !currentUser}
-  <a class="discord-button" href="https://duelchannel.ringrace.rs/api/v1/users/~redirect">
+  <a class="button" href="https://duelchannel.ringrace.rs/api/v1/users/~redirect">
     <Icon data={faDiscord} scale={1.5}/>
     <p>Login</p>
   </a>
@@ -30,6 +30,38 @@
 
     background-color: var(--primary-light);
     border-bottom: 4px solid var(--bg);
+
+    & h1 {
+      border-color: var(--bg);
+      border-style: solid;
+      border-width: 0 2px 0 0;
+    }
+
+    & .button {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+
+      height: 100%;
+      padding: 0 1.5em;
+      margin-right: 1em;
+      border-color: var(--bg);
+      border-style: solid;
+      border-width: 0 2px 0 0;
+
+      color: black;
+      background-color: var(--primary-light);
+      transition: background-color 0.2s;
+      text-decoration: none;
+
+      & p {
+        margin-left: 8px;
+      }
+
+      &:hover {
+        background-color: var(--primary);
+      }
+    }
   }
 
   h1 {
@@ -38,30 +70,5 @@
     font-size: 3em;
     margin-left: 2em;
     flex-grow: 1;
-  }
-
-  a.discord-button {
-    text-decoration: none;
-  }
-
-  .discord-button {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-
-    background-color: #5865F2;
-    color: white;
-    padding: 0.25em 1.5em;
-    border-radius: 8px;
-
-    margin: 2em;
-
-    & p {
-      margin-left: 8px;
-    }
-
-    &:active {
-      background-color: #3744d4;
-    }
   }
 </style>
