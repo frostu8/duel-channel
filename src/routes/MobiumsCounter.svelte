@@ -2,13 +2,15 @@
   import CounterDigit from './CounterDigit.svelte';
   import Counter from './Counter.svelte';
 
+  import mobiumBill from '$lib/assets/counter/mobiums.png';
+
   let { mobiums, digitCount = 7 } = $props();
 </script>
 
 <div class="mobiums-counter">
   <h1 class="mobiums-text">{mobiums}</h1>
   <Counter number={mobiums} padding={digitCount} by={18} animate={true}>
-    <img src="/counter/mobiums.png" alt="Mobium Bill" class="mobium" />
+    <img src={mobiumBill} alt="Mobium Bill" class="mobium" />
   </Counter>
 </div>
 
