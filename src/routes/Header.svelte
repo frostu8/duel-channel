@@ -36,7 +36,7 @@
     align-items: center;
 
     background-color: var(--primary-light);
-    border-bottom: 4px solid var(--bg);
+    /* border-bottom: 4px solid var(--bg); */
 
     & .seperator {
       height: 100%;
@@ -64,7 +64,7 @@
       text-decoration: none;
 
       & p {
-        margin-left: 8px;
+        margin-left: 16px;
       }
 
       &:hover {
@@ -75,8 +75,7 @@
 
   h1 {
     color: var(--bg);
-    transform: translate(0, 4px);
-    font-size: 3em;
+    font-size: 2.5em;
     margin-left: 2em;
     flex-grow: 1;
   }
