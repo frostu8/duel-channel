@@ -8,7 +8,7 @@
 <header>
   <h1>DUEL CHANNEL</h1>
   {#if !currentUser}
-  <a class="discord-button" href="/api/v1/users/~redirect">
+  <a class="discord-button" href="https://duelchannel.ringrace.rs/api/v1/users/~redirect">
     <Icon data={faDiscord} scale={1.5}/>
     <p>Login</p>
   </a>
