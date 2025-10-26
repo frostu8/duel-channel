@@ -31,7 +31,6 @@
 
   let acceptingBets = $state(false);
   let betDuration = $state(0);
-  let betCloseTimeoutId;
 
   let wagers = $state([]);
 
@@ -157,13 +156,13 @@
           return player.team === TEAM_RED;
         })
         if (redPlayer) redPlayerName = redPlayer.display_name;
-        else redPlayerName = 'Team Red'; // reset to a sensible default
+        else redPlayerName = 'Waiting...'; // reset to a sensible default
 
         const bluePlayer = currentBattle.participants.find((player) => {
           return player.team === TEAM_BLUE;
         })
         if (bluePlayer) bluePlayerName = bluePlayer.display_name;
-        else bluePlayerName = 'Team Blue'; // reset to a sensible default
+        else bluePlayerName = 'Waiting...'; // reset to a sensible default
 
         // Fetch existing wagers
         fetchWagers(currentBattle.id);
