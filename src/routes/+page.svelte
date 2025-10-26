@@ -25,8 +25,11 @@
   let heartbeatSeq = 1;
   let heartbeatId;
 
-  // Session details
+  // User details
   let currentUser = $state(null);
+  let currentMobiums = $derived(currentUser?.mobiums);
+
+  // Session details
   let currentBattle = $state(null);
   let isBattleTrivial = $derived.by(() => {
     if (!currentBattle) return currentBattle;
@@ -339,8 +342,8 @@
       create={putWager}
     />
   </WagerList>
-  {#if currentUser}
-  <MobiumsCounter mobiums={currentUser.mobiums}/>
+  {#if currentMobiums}
+  <MobiumsCounter mobiums={currentMobiums} by={18}/>
   {/if}
 </main>
 
