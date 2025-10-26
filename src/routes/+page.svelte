@@ -37,7 +37,7 @@
 
   // TEAM HELL.
   let redWagers = $derived.by(() => wagers.filter((wager) => wager.victor === TEAM_RED));
-  let redPlayerName = $state('Team Red');
+  let redPlayerName = $state('Waiting...');
   let redStatus = $derived.by(() => {
     // If there is no match, there is no winner
     if (!currentBattle) return 'none';
@@ -56,7 +56,7 @@
   });
 
   let blueWagers = $derived.by(() => wagers.filter((wager) => wager.victor === TEAM_BLUE));
-  let bluePlayerName = $state('Team Blue');
+  let bluePlayerName = $state('Waiting...');
   let blueStatus = $derived.by(() => {
     // If there is no match, there is no winner
     if (!currentBattle) return 'none';
