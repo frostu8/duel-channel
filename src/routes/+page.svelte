@@ -35,8 +35,6 @@
     const teamNumbers = currentBattle.participants.map((player) => player.team);
     const uniqTeams = [...new Set(teamNumbers)];
 
-    console.log($state.snapshot(currentBattle.participants));
-
     return uniqTeams.length < 2;
   });
 
