@@ -253,7 +253,7 @@
       const data = JSON.parse(event.data);
 
       // Here, we add a little bit of artificial delay to increase tension
-      if (data.op === 'mobiums-update' || data.op === 'battle-update') {
+      if (data.op === 'mobiums-change' || data.op === 'battle-update') {
         const broadcasterLatency = player.getPlaybackStats().hlsLatencyBroadcaster;
         console.log('broadcaster delay:', broadcasterLatency);
 
