@@ -3,6 +3,10 @@
   import { faDiscord } from '@fortawesome/free-brands-svg-icons/faDiscord';
 
   let { currentUser } = $props();
+
+  let hasButtons = $derived.by(() => {
+    return !currentUser;
+  });
 </script>
 
 <header>
@@ -12,6 +16,9 @@
     <Icon data={faDiscord} scale={1.5}/>
     <p>Login</p>
   </a>
+  {/if}
+  {#if hasButtons}
+  <div class="seperator"></div>
   {/if}
 </header>
 
@@ -31,10 +38,13 @@
     background-color: var(--primary-light);
     border-bottom: 4px solid var(--bg);
 
-    & h1 {
+    & .seperator {
+      height: 100%;
+      width: 2em;
+
       border-color: var(--bg);
       border-style: solid;
-      border-width: 0 2px 0 0;
+      border-width: 0 0 0 2px;
     }
 
     & .button {
@@ -44,10 +54,9 @@
 
       height: 100%;
       padding: 0 1.5em;
-      margin-right: 1em;
       border-color: var(--bg);
       border-style: solid;
-      border-width: 0 2px 0 0;
+      border-width: 0 0 0 2px;
 
       color: black;
       background-color: var(--primary-light);
