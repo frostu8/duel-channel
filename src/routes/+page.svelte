@@ -12,7 +12,7 @@
   const BATTLE_STATUS_CONCLUDED = 1;
   const BATTLE_STATUS_CANCELLED = 2;
 
-  const INDUCED_DELAY = 3_500; // in ms
+  const INDUCED_DELAY = 1_500; // in ms
 
   // Twitch player; lets us add an artificial delay to bet events
   let player;
