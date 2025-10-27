@@ -417,6 +417,10 @@
     min-height: calc(100vh - 3em);
   }
 
+  article {
+    width: 115vh;
+  }
+
   .wager-odds-panel {
     display: flex;
     flex-flow: row nowrap;
