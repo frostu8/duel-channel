@@ -37,13 +37,20 @@
 </section>
 
 <style>
+  /* For mobile viewports */
+  @media only screen and (max-width: calc(40em + 500px)) {
+    section {
+      flex: 1 1 var(--width, 20em) !important;
+    }
+  }
+
   section {
     display: flex;
-    /* flex: 1 1 0px; */
+    flex: 0 0 var(--width, 20em);
     flex-flow: column nowrap;
     background-color: var(--bg-light);
     margin-bottom: 2em;
-    width: var(--width, 24em);
+    min-height: var(--height, 20em);
 
     &.red {
       color: var(--text-red);

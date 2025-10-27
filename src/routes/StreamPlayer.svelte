@@ -21,7 +21,11 @@
   }
 </script>
 
-<div class="stream-container" style:height="{height}px" bind:clientWidth={width}>
+<div
+  class="stream-container"
+  bind:clientWidth={width}
+>
+  <!-- style:max-height="{height}px" -->
   <div id="twitch-embed"></div>
 </div>
 <svelte:head>
@@ -29,6 +33,18 @@
 </svelte:head>
 
 <style>
+  /* For mobile viewports */
+  @media only screen and (max-width: calc(40em + 500px)) {
+    .stream-container {
+      min-height: 120vw;
+    }
+  }
+
+  .stream-container {
+    min-width: var(--min-width);
+    flex-grow: 1;
+  }
+
   #twitch-embed {
     width: 100%;
     height: 100%;

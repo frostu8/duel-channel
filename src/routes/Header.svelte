@@ -21,6 +21,7 @@
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 1;
 
     height: 3em;
     width: 100%;

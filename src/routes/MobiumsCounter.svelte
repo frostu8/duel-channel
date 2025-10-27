@@ -20,6 +20,8 @@
     bottom: 0px;
     left: calc(50% - 18em);
     width: 36em;
+    z-index: 1;
+    height: var(--height, 7em);
 
     /* Creates the trapezoidal shape */
     clip-path: polygon(

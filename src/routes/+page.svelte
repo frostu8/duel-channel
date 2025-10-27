@@ -362,8 +362,12 @@
       create={putWager}
     />
   </WagerList>
-  <article>
-    <StreamPlayer channel="duelringracers" onready={streamReady}/>
+  <article class="main-content">
+    <StreamPlayer
+      channel="duelringracers"
+      onready={streamReady}
+      --min-width="500px"
+    />
     <section class="wager-odds-panel">
       {#if !isBattleTrivial}
         <p class="red">M${redPot.pot}</p>
@@ -416,21 +420,32 @@
     />
   </WagerList>
   {#if typeof deferredMobiums === 'number'}
-  <MobiumsCounter mobiums={deferredMobiums} by={18}/>
+  <MobiumsCounter mobiums={deferredMobiums} by={18} --height="7em"/>
   {/if}
 </main>
 
 <style>
+  /* For mobile viewports */
+  @media only screen and (max-width: calc(40em + 500px)) {
+    .main-content {
+      flex: 0 0 100%;
+      order: 3;
+    }
+  }
+
   main {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
 
     margin-top: 3em;
     min-height: calc(100vh - 3em);
   }
 
-  article {
-    flex-grow: 1;
+  .main-content {
+    display: flex;
+    flex-flow: column nowrap;
+
+    flex-grow: 2;
   }
 
   .wager-odds-panel {
@@ -485,5 +500,6 @@
 
   .info-panel {
     padding: 1em;
+    margin-bottom: 8em;
   }
 </style>
