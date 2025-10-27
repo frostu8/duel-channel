@@ -418,7 +418,7 @@
   }
 
   article {
-    width: 115vh;
+    flex-grow: 1;
   }
 
   .wager-odds-panel {

@@ -1,6 +1,11 @@
 <script>
   let { channel, onready } = $props();
 
+  const ASPECT_RATIO = 32 / 15;
+
+  let width = $state(720);
+  let height = $derived(width / ASPECT_RATIO);
+
   function twitchLoaded() {
     const player = new Twitch.Embed("twitch-embed", {
       width: '100%',
@@ -16,7 +21,7 @@
   }
 </script>
 
-<div class="stream-container">
+<div class="stream-container" style:height="{height}px" bind:clientWidth={width}>
   <div id="twitch-embed"></div>
 </div>
 <svelte:head>
@@ -24,10 +29,6 @@
 </svelte:head>
 
 <style>
-  .stream-container {
-    height: 65vh;
-  }
-
   #twitch-embed {
     width: 100%;
     height: 100%;

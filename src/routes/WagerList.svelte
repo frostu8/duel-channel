@@ -37,10 +37,11 @@
 <style>
   section {
     display: flex;
-    flex: 1 1 0px;
+    /* flex: 1 1 0px; */
     flex-flow: column nowrap;
     background-color: var(--bg-light);
     margin-bottom: 2em;
+    width: var(--width, 24em);
 
     &.red {
       color: var(--text-red);
