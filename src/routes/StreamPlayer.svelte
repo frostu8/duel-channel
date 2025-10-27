@@ -36,7 +36,8 @@
   /* For mobile viewports */
   @media only screen and (max-width: calc(40em + 500px)) {
     .stream-container {
-      min-height: 120vw;
+      min-height: 140vw;
+      width: 100vw;
     }
   }
 
