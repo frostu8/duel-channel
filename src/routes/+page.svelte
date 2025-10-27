@@ -90,17 +90,17 @@
   }
 
   function replaceWager(wager) {
-    const existingWager = wagers.findIndex((innerWager) => {
-      return innerWager.user.username === wager.user.username;
+    let newWagers = wagers.filter((innerWager) => {
+      return innerWager.user.username !== wager.user.username;
     });
 
-    if (existingWager < 0) {
-      // this is a new wager, slap it in
-      wagers.push(wager);
-    } else {
-      // replace the old wager
-      wagers[existingWager] = wager;
-    }
+    // Add new wager after removing the old one (if it existed)
+    newWagers.push(wager);
+
+    // sort
+    newWagers.sort((a, b) => b.mobiums - a.mobiums);
+
+    wagers = newWagers;
   }
 
   function fetchWagers(battleId) {
