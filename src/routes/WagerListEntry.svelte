@@ -1,25 +1,51 @@
 <script>
-  let { wager } = $props();
+  import { fly } from 'svelte/transition';
 
-  let username = $derived(wager.user.username);
-  let wagerAmount = $derived(wager.mobiums);
+  let { wager, float = 'left' } = $props();
+
+  const TRANSITION_DURATION = 400;
+  const TRANSITION_FLY_DIST = 20; // dist in px
+
+  let flyX = $derived.by(() => {
+    if (float === 'left')
+      return TRANSITION_FLY_DIST;
+    else if (float === 'right') // flip fly if this is floating on the other side
+      return TRANSITION_FLY_DIST * -1;
+  });
 </script>
 
 <div class="wager-entry">
-  <p class="username">{username}</p>
-  <p class="wager">{wagerAmount}</p>
+  <div class="wager-inner" transition:fly={{ x: flyX, duration: TRANSITION_DURATION }}>
+    <img
+      class="avatar"
+      src={wager.user.avatar}
+      alt="{wager.user.display_name}'s avatar"
+      width="32"
+    />
+    <p class="display-name">{wager.user.display_name}</p>
+    <p class="wager">{wager.mobiums}</p>
+  </div>
 </div>
 
 <style>
-  .wager-entry {
+  .wager-inner {
     display: flex;
     flex-flow: row nowrap;
-    padding: 0.5em;
+    align-items: center;
+    padding: 0.25em 0.75em;
+  }
 
-    & .username {
-      flex-grow: 1;
-      padding: 0 1em;
-    }
+  .avatar {
+    clip-path: circle(50%);
+  }
+
+  .display-name {
+    flex-grow: 1;
+    padding: 0 1em;
+  }
+
+  .wager {
+    font-weight: bold;
   }
 
   .wager-entry:nth-child(even) {

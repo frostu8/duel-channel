@@ -1,7 +1,7 @@
 <script>
   import WagerListEntry from './WagerListEntry.svelte'
 
-  let { wagers, teamColor, title, float, status, children } = $props();
+  let { wagers, teamColor, title, float = 'left', status, children } = $props();
 </script>
 
 <section
@@ -28,7 +28,7 @@
   </div>
   <div class="wager-list">
     {#each wagers as wager (wager.user.username)}
-      <WagerListEntry {wager} />
+      <WagerListEntry {wager} {float}/>
     {/each}
   </div>
   {@render children?.()}
