@@ -1,11 +1,9 @@
 <script>
-  let { ontimeup, duration } = $props();
+  let { oncountdown, ontimeup, duration } = $props();
 
   let counter = $state(duration);
-  let counterSeconds = $derived(Math.ceil(counter / 1_000))
 
   let destroyed = false;
-
   let lastTimestamp;
 
   function animateBar(timestamp) {
@@ -20,13 +18,15 @@
     const timeDelta = timestamp - lastTimestamp;
     counter = Math.max(counter - timeDelta, 0);
 
+    oncountdown?.(counter);
+
     // Update last timestamp
     lastTimestamp = timestamp;
 
     if (counter > 0) {
       requestAnimationFrame(animateBar);
     } else {
-      if (ontimeup) ontimeup();
+      ontimeup?.();
     }
   }
 
@@ -37,29 +37,15 @@
   });
 </script>
 
-<div class="timer-container">
-  <div class="timer-bar">
-    {#if duration > 0}
-    <div style:width={`${counter / duration * 100}%`}></div>
-    {:else}
-    <div style:width="0"></div>
-    {/if}
-  </div>
-  <p class="timer-text">
-    {#if counterSeconds > 0}
-    <span>Bets close in {counterSeconds}s</span>
-    {:else}
-    <br>
-    {/if}
-  </p>
+<div class="timer-bar">
+  {#if duration > 0}
+  <div style:width="{counter / duration * 100}%"></div>
+  {:else}
+  <div style:width="0"></div>
+  {/if}
 </div>
 
 <style>
-  .timer-text {
-    text-align: right;
-    padding: 0.25em 0.75em;
-  }
-
   .timer-bar {
     height: 4px;
     width: 100%;

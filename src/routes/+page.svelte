@@ -2,9 +2,9 @@
   import StreamPlayer from './StreamPlayer.svelte';
   import MobiumsCounter from './MobiumsCounter.svelte';
   import Header from './Header.svelte';
+  import TimerBar from './TimerBar.svelte';
   import WagerList from './WagerList.svelte';
   import WagerControls from './WagerControls.svelte';
-  import WagerTimerBar from './WagerTimerBar.svelte';
 
   const TEAM_RED = 0;
   const TEAM_BLUE = 1;
@@ -41,12 +41,13 @@
     return uniqTeams.length < 2;
   });
 
-  let acceptingBets = $state(false);
-  let betDuration = $state(0);
+  let acceptingBets = $state(false); // Whether the match is accepting bets
+  let betDuration = $state(0); // How long the last bet was
+  let betCountdown = $state(0); // How much time left is on the current bet
 
   let wagers = $state([]);
 
-  // TEAM HELL.
+  // There has gotta be a better way of doing this - Yandev
   let redWagers = $derived.by(() => wagers.filter((wager) => wager.victor === TEAM_RED));
   let redPlayerName = $state('Waiting...');
   let redStatus = $derived.by(() => {
@@ -84,6 +85,39 @@
       return 'winner';
     }
   });
+
+  // Odds calculations
+  // I decided I like FFTs odds display better since it's obvious: for every
+  // dollar you bet in that pot, if you win, you get back your bet and x0.33
+  // more.
+  function calculatePotFor(team) {
+    let adversaryTeam;
+    if (team === TEAM_RED)
+      adversaryTeam = TEAM_BLUE;
+    else
+      adversaryTeam = TEAM_RED;
+
+    // Calculate our pot
+    let pot = wagers
+      .filter((w) => w.victor == team)
+      .reduce((acc, w) => acc + w.mobiums, 0);
+
+    // Calculate enemy pot
+    let adversaryPot = wagers
+      .filter((w) => w.victor == adversaryTeam)
+      .reduce((acc, w) => acc + w.mobiums, 0);
+
+    let potInfo = { pot };
+    if (adversaryPot > 0 && pot > 0) {
+      // Find fractional difference
+      potInfo.odds = `x${(adversaryPot / pot).toFixed(3)}`;
+    }
+
+    return potInfo
+  }
+
+  let redPot = $derived(calculatePotFor(TEAM_RED));
+  let bluePot = $derived(calculatePotFor(TEAM_BLUE));
 
   function streamReady(newPlayer) {
     player = newPlayer;
@@ -318,9 +352,35 @@
   </WagerList>
   <article>
     <StreamPlayer channel="duelringracers" onready={streamReady}/>
-    {#key currentBattle?.id}
-    <WagerTimerBar duration={betDuration} ontimeup={onBetTimeup}/>
-    {/key}
+    <section class="wager-odds-panel">
+      {#if !isBattleTrivial}
+        <p class="red">M${redPot.pot}</p>
+        <p>
+          {#if redPot.odds}
+            <span class="red">{redPot.odds}</span>
+          {/if}
+          |
+          {#if bluePot.odds}
+            <span class="blue">{bluePot.odds}</span>
+          {/if}
+        </p>
+        <p class="blue">M${bluePot.pot}</p>
+      {/if}
+    </section>
+    <section class="bet-timer-panel">
+      {#key currentBattle?.id}
+        <TimerBar
+          duration={betDuration}
+          oncountdown={(time) => betCountdown = time}
+          ontimeup={onBetTimeup}
+        />
+      {/key}
+      {#if betCountdown > 1}
+        <p>Bets close in {Math.ceil(betCountdown / 1_000)} seconds</p>
+      {:else if betCountdown > 0}
+        <p>Bets close in {Math.ceil(betCountdown / 1_000)} second</p>
+      {/if}
+    </section>
     <section class="info-panel">
       {#if currentBattle}
         <p>Now playing on:</p>
@@ -350,10 +410,61 @@
 
 <style>
   main {
-    margin-top: 3em;
-    min-height: calc(100vh - 3em);
     display: flex;
     flex-flow: row nowrap;
+
+    margin-top: 3em;
+    min-height: calc(100vh - 3em);
+  }
+
+  .wager-odds-panel {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    height: 0;
+
+    & > p {
+      font-size: 1.2em;
+      transform: translate(0, 32px);
+    }
+
+    & p.red, & p.blue {
+      color: white;
+      height: fit-content;
+      border-radius: 4px;
+      padding: 0.2em 0.5em;
+      margin: 0 1em;
+    }
+
+    & span {
+      font-weight: bold;
+    }
+
+    & p.red {
+      background-color: var(--bg-red);
+    }
+
+    & p.blue {
+      background-color: var(--bg-blue);
+    }
+
+    & span.red {
+      color: var(--text-red);
+    }
+
+    & span.blue {
+      color: var(--text-blue);
+    }
+  }
+
+  .bet-timer-panel {
+    text-align: right;
+    margin: 0 0 2em;
+
+    & p {
+      margin: 0.25em 1em;
+    }
   }
 
   .info-panel {
