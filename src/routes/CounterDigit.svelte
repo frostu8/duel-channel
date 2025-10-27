@@ -28,6 +28,9 @@
       }
     }
 
+    if (isNaN(number))
+      throw new Error('number is nan');
+
     // Get the digit image from the digit
     switch (number % 10) {
       case 0:

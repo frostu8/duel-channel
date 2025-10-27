@@ -28,6 +28,12 @@
   // User details
   let currentUser = $state(null);
   let currentMobiums = $derived(currentUser?.mobiums);
+  // Deferred mobiums; this resets to the user's current mobiums when a new
+  // battle is received. This gives the illusion that a player's mobium count
+  // is reduced to zero before receiving their bailout when the next match
+  // starts, when in reality it all happens in one transaction betwee the
+  // client and the server.
+  let deferredMobiums = $derived(currentMobiums);
 
   // Session details
   let currentBattle = $state(null);
@@ -210,6 +216,9 @@
 
         // wait for wagers to close
         setBetTimer();
+
+        // Reset deferred mobiums if they were set
+        deferredMobiums = currentUser.mobiums;
         break;
       case 'battle-update':
         // Is this battle update for an old battle? Discard if so.
@@ -229,6 +238,15 @@
 
         // Update user's mobiums
         currentUser.mobiums = msg.d.mobiums;
+
+        if (msg.d.bailout) {
+          // Set mobiums to 0 to give the illusion that you lost all your money
+          // (you did, but grandma Sonic was nice enough to lend some money in
+          // milliseconds).
+          deferredMobiums = 0;
+        } else {
+          deferredMobiums = currentUser.mobiums;
+        }
         break;
       case 'heartbeat-ack':
         break;
@@ -397,8 +415,8 @@
       create={putWager}
     />
   </WagerList>
-  {#if currentMobiums}
-  <MobiumsCounter mobiums={currentMobiums} by={18}/>
+  {#if typeof deferredMobiums === 'number'}
+  <MobiumsCounter mobiums={deferredMobiums} by={18}/>
   {/if}
 </main>
 
