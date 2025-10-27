@@ -20,6 +20,8 @@
       <span>NO CONTEST...</span>
     {:else if status === 'winner'}
       <span>WIN!</span>
+    {:else if status === 'forfeit'}
+      <span>FORFEIT!</span>
     {:else}
       <!-- We still want it to take up space -->
       <br>

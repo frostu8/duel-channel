@@ -47,44 +47,38 @@
 
   let wagers = $state([]);
 
-  // There has gotta be a better way of doing this - Yandev
   let redWagers = $derived.by(() => wagers.filter((wager) => wager.victor === TEAM_RED));
   let redPlayerName = $state('Waiting...');
-  let redStatus = $derived.by(() => {
-    // If there is no match, there is no winner
-    if (!currentBattle) return 'none';
-
-    // If the match hasn't ended, there is no winner
-    if (currentBattle.status === BATTLE_STATUS_ONGOING) return 'none';
-
-    const player = currentBattle.participants.find((player) => player.team === TEAM_RED);
-    if (!player) return 'none'; // Don't bother for players that don't exist.
-
-    if (player.no_contest) {
-      return 'no-contest';
-    } else {
-      return 'winner';
-    }
-  });
 
   let blueWagers = $derived.by(() => wagers.filter((wager) => wager.victor === TEAM_BLUE));
   let bluePlayerName = $state('Waiting...');
-  let blueStatus = $derived.by(() => {
+
+  // Status calculations
+  function getStatusFor(team) {
     // If there is no match, there is no winner
     if (!currentBattle) return 'none';
 
     // If the match hasn't ended, there is no winner
     if (currentBattle.status === BATTLE_STATUS_ONGOING) return 'none';
 
-    const player = currentBattle.participants.find((player) => player.team === TEAM_BLUE);
+    const player = currentBattle.participants.find((player) => player.team === team);
     if (!player) return 'none'; // Don't bother for players that don't exist.
 
     if (player.no_contest) {
-      return 'no-contest';
+      // This player lost...
+      if (currentBattle.status === BATTLE_STATUS_CANCELLED) return 'forfeit';
+      else return 'no-contest';
     } else {
-      return 'winner';
+      // This player won!
+      // NOTE: we don't want this to say they "won," because that gives the
+      // impression the pots will be distributed!
+      if (currentBattle.status === BATTLE_STATUS_CANCELLED) return 'none';
+      else return 'winner';
     }
-  });
+  }
+
+  let redStatus = $derived(getStatusFor(TEAM_RED));
+  let blueStatus = $derived(getStatusFor(TEAM_BLUE));
 
   // Odds calculations
   // I decided I like FFTs odds display better since it's obvious: for every
