@@ -254,6 +254,7 @@
   }
 
   function setupSocket() {
+    if (heartbeatId) clearInterval(heartbeatId);
     socket = new WebSocket('/api/v1/socket');
 
     socket.addEventListener('open', (event) => {
