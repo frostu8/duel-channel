@@ -43,6 +43,7 @@
 
   .stream-container {
     min-width: var(--min-width);
+    max-height: 36em;
     flex-grow: 1;
   }
 
