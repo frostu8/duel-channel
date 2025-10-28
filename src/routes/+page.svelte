@@ -218,7 +218,7 @@
         setBetTimer();
 
         // Reset deferred mobiums if they were set
-        deferredMobiums = currentUser.mobiums;
+        deferredMobiums = currentUser?.mobiums;
         break;
       case 'battle-update':
         // Is this battle update for an old battle? Discard if so.
