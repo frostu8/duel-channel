@@ -53,10 +53,14 @@
 
   let wagers = $state([]);
 
-  let redWagers = $derived.by(() => wagers.filter((wager) => wager.victor === TEAM_RED));
+  let redWagers = $derived.by(() => {
+    return wagers.filter((wager) => wager.victor === TEAM_RED && wager.mobiums > 0);
+  });
   let redPlayerName = $state('Waiting...');
 
-  let blueWagers = $derived.by(() => wagers.filter((wager) => wager.victor === TEAM_BLUE));
+  let blueWagers = $derived.by(() => {
+    return wagers.filter((wager) => wager.victor === TEAM_BLUE && wager.mobiums > 0);
+  });
   let bluePlayerName = $state('Waiting...');
 
   // Status calculations
