@@ -6,6 +6,7 @@
     padding = 0,
     animate = false,
     by = 1,
+    height = "1.5em",
     children
   } = $props();
 
@@ -59,7 +60,7 @@
 
 <div class="counter">
   {#each digits as digitNum}
-    <CounterDigit number={currentNumber} {digitNum} />
+    <CounterDigit number={currentNumber} {digitNum} --height={height} />
   {/each}
   {@render children?.()}
 </div>

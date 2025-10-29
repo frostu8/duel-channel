@@ -9,7 +9,13 @@
 
 <div class="mobiums-counter">
   <h1 class="mobiums-text">{mobiums}</h1>
-  <Counter number={mobiums} padding={digitCount} by={18} animate={true}>
+  <Counter
+    number={mobiums}
+    height="3.25em"
+    padding={digitCount}
+    by={18}
+    animate={true}
+  >
     <img src={mobiumBill} alt="Mobium Bill" draggable="false" class="mobium" />
   </Counter>
 </div>

@@ -73,6 +73,6 @@
 
   img {
     image-rendering: crisp-edges;
-    width: 3em;
+    height: var(--height, 1em);
   }
 </style>

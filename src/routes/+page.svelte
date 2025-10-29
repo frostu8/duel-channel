@@ -56,12 +56,22 @@
   let redWagers = $derived.by(() => {
     return wagers.filter((wager) => wager.victor === TEAM_RED && wager.mobiums > 0);
   });
-  let redPlayerName = $state('Waiting...');
 
   let blueWagers = $derived.by(() => {
     return wagers.filter((wager) => wager.victor === TEAM_BLUE && wager.mobiums > 0);
   });
-  let bluePlayerName = $state('Waiting...');
+
+  // Fetching the player
+  function getPlayerOn(team) {
+    if (currentBattle === null) return null;
+
+    return currentBattle.participants.find((player) => {
+      return player.team === team;
+    });
+  }
+
+  let redPlayer = $derived(getPlayerOn(TEAM_RED));
+  let bluePlayer = $derived(getPlayerOn(TEAM_BLUE));
 
   // Status calculations
   function getStatusFor(team) {
@@ -202,19 +212,6 @@
         // update current battle
         currentBattle = msg.d;
 
-        // change team names to names of player
-        const redPlayer = currentBattle.participants.find((player) => {
-          return player.team === TEAM_RED;
-        })
-        if (redPlayer) redPlayerName = redPlayer.display_name;
-        else redPlayerName = 'Waiting...'; // reset to a sensible default
-
-        const bluePlayer = currentBattle.participants.find((player) => {
-          return player.team === TEAM_BLUE;
-        })
-        if (bluePlayer) bluePlayerName = bluePlayer.display_name;
-        else bluePlayerName = 'Waiting...'; // reset to a sensible default
-
         // Fetch existing wagers
         fetchWagers(currentBattle.id);
 
@@ -352,8 +349,8 @@
 <Header {currentUser}/>
 <main>
   <WagerList
+    player={redPlayer}
     wagers={redWagers}
-    title={redPlayerName}
     float="left"
     status={redStatus}
     teamColor="red"
@@ -409,8 +406,8 @@
     </section>
   </article>
   <WagerList
+    player={bluePlayer}
     wagers={blueWagers}
-    title={bluePlayerName}
     float="right"
     status={blueStatus}
     teamColor="blue"
