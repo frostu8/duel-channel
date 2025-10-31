@@ -20,6 +20,7 @@
 
   // The actual socket
   let socket;
+  let reconnectInterval = 1_000;
 
   let heartbeatInterval = 30_000;
   let heartbeatSeq = 1;
@@ -300,11 +301,26 @@
     heartbeatSeq += 1;
   }
 
+  function getBroadcasterLatency() {
+    try {
+      return player.getPlaybackStats().hlsLatencyBroacaster * 1_000;
+    } catch (e) {
+      console.error(e);
+      // Return a sensible default
+      return 2_000;
+    }
+  }
+
   function setupSocket() {
     if (heartbeatId) clearInterval(heartbeatId);
+
     socket = new WebSocket('/api/v1/socket');
+    reconnectInterval *= 2; // increase reconnect delay in case the socket dcs
 
     socket.addEventListener('open', (event) => {
+      // reset reconnect interval
+      reconnectInterval = 1_000;
+
       // start heartbeating
       heartbeatId = setInterval(socketHeartbeat, heartbeatInterval);
     });
@@ -314,11 +330,11 @@
 
       // Here, we add a little bit of artificial delay to increase tension
       if (data.op === 'mobiums-change' || data.op === 'battle-update') {
-        const broadcasterLatency = player.getPlaybackStats().hlsLatencyBroadcaster;
+        const broadcasterLatency = getBroadcasterLatency();
         console.log('broadcaster delay:', broadcasterLatency);
 
         // add a little bit of extra delay
-        const delay = Math.trunc(broadcasterLatency * 1_000 + INDUCED_DELAY);
+        const delay = Math.trunc(broadcasterLatency + INDUCED_DELAY);
         setTimeout(() => handleMessage(data), delay);
       } else {
         handleMessage(data);
@@ -326,10 +342,15 @@
     });
 
     socket.addEventListener('close', (event) => {
-      console.log('close received', event.reason);
-      console.log('reconnecting in 1 sec');
+      if (heartbeatId) {
+        clearInterval(heartbeatId);
+        heartbeatId = null;
+      }
 
-      setTimeout(setupSocket, 1_000);
+      console.log('close received', event.reason);
+      console.log(`reconnecting in ${Math.trunc(reconnectInterval)} sec`);
+
+      setTimeout(setupSocket, reconnectInterval);
     });
   }
 
@@ -429,7 +450,7 @@
   /* For mobile viewports */
   @media only screen and (max-width: calc(40em + 500px)) {
     .main-content {
-      flex: 0 0 100%;
+      flex: 0 1 100%;
       order: 3;
     }
   }
