@@ -51,7 +51,7 @@
     background-color: var(--bg);
 
     & button {
-      flex-grow: 1;
+      flex: 1 0 auto;
       background-color: var(--primary);
       border: 0;
       transition: background-color 0.2s;

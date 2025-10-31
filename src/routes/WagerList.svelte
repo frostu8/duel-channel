@@ -51,13 +51,6 @@
 </section>
 
 <style>
-  /* For mobile viewports */
-  @media only screen and (max-width: calc(40em + 500px)) {
-    section {
-      flex: 1 1 var(--width, 20em) !important;
-    }
-  }
-
   section {
     display: flex;
     flex: 0 0 var(--width, 20em);
@@ -65,6 +58,11 @@
     background-color: var(--bg-light);
     margin-bottom: 2em;
     min-height: var(--height, 20em);
+
+    /* For mobile viewports */
+    @media only screen and (max-width: calc(40em + 500px)) {
+      flex: 1 1 auto;
+    }
 
     &.red {
       color: var(--text-red);
