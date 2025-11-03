@@ -303,7 +303,7 @@
 
   function getBroadcasterLatency() {
     try {
-      return player.getPlaybackStats().hlsLatencyBroacaster * 1_000;
+      return Math.trunc(player.getPlaybackStats().hlsLatencyBroadcaster * 1_000);
     } catch (e) {
       console.error(e);
       // Return a sensible default
@@ -334,7 +334,7 @@
         console.log('broadcaster delay:', broadcasterLatency);
 
         // add a little bit of extra delay
-        const delay = Math.trunc(broadcasterLatency + INDUCED_DELAY);
+        const delay = broadcasterLatency + INDUCED_DELAY;
         setTimeout(() => handleMessage(data), delay);
       } else {
         handleMessage(data);
